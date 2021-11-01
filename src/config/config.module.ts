@@ -7,7 +7,8 @@ import AppConfig from '@config/app.config';
   imports: [
     NestConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
+      envFilePath:
+        process.env.NODE_ENV === 'dev' ? '.env.development' : '.env.test',
       ignoreEnvFile: process.env.NODE_ENV === 'production',
 
       load: [
