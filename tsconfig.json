@@ -22,7 +22,9 @@
       "@config/*": ["src/config/*"],
       "@prisma/*": ["src/prisma/*"],
       "@jwt/*": ["src/jwt/*"],
-      "@users/*": ["src/users/*"]
+      "@users/*": ["src/users/*"],
+      "@common/*": ["src/common/*"],
+      "@auth/*": ["src/auth/*"]
     }
   }
 }
