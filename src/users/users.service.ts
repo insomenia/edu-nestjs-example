@@ -1,9 +1,15 @@
+import { User } from '.prisma/client';
 import { AuthService } from '@app/auth/auth.service';
 import { JwtService } from '@app/jwt/jwt.service';
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@prisma/prisma.service';
 import { SignupInput, SignupOutput } from '@users/dtos/signup.dto';
+import {
+  ChangePasswordInput,
+  ChangePasswordOutput,
+} from './dtos/change-password.dto';
+import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileOutput } from './dtos/user-profile.dto';
 
@@ -125,6 +131,134 @@ export class UsersService {
       return {
         ok: false,
         error: 'User not found',
+      };
+    }
+  }
+
+  async editProfile(
+    editProfileInput: EditProfileInput,
+    authUser: User,
+  ): Promise<EditProfileOutput> {
+    try {
+      await this.prisma.user.findUnique({
+        where: {
+          id: authUser.id,
+        },
+      });
+
+      if (editProfileInput.email) {
+        if (editProfileInput.email !== authUser.email) {
+          const exists = await this.prisma.user.findUnique({
+            where: {
+              email: editProfileInput.email,
+            },
+          });
+          if (exists) {
+            return {
+              ok: false,
+              error: '이미 존재하는 이메일로 수정할 수 없습니다.',
+            };
+          }
+        }
+      }
+
+      if (editProfileInput.username) {
+        if (editProfileInput.username !== authUser.username) {
+          const exists = await this.prisma.user.findUnique({
+            where: {
+              username: editProfileInput.username,
+            },
+          });
+          if (exists) {
+            return {
+              ok: false,
+              error: '이미 존재하는 사용자 이름으로 수정할 수 없습니다.',
+            };
+          }
+        }
+      }
+
+      await this.prisma.user.update({
+        where: {
+          id: authUser.id,
+        },
+        data: {
+          ...editProfileInput,
+        },
+      });
+
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        ok: false,
+        error: '사용자 프로파일을 수정할 수 없습니다.',
+      };
+    }
+  }
+
+  async changePassword(
+    { currentPassword, newPassword, verifyPassword }: ChangePasswordInput,
+    user: User,
+  ): Promise<ChangePasswordOutput> {
+    try {
+      if (newPassword !== verifyPassword) {
+        return {
+          ok: false,
+          error: '비밀번호가 같지 않습니다.',
+        };
+      }
+
+      const passwordCorrect = await this.authService.checkPassowrd(
+        user,
+        currentPassword,
+      );
+      if (!passwordCorrect) {
+        return {
+          ok: false,
+          error: '현재 비밀번호가 틀립니다.',
+        };
+      }
+
+      if (currentPassword === newPassword) {
+        return {
+          ok: false,
+          error: '새 비밀번호가 현재 비밀번호와 같습니다.',
+        };
+      }
+
+      const regex = new RegExp(
+        /(?=.*[!@#$%^&\*\(\)_\+\-=\[\]\{\};\':\"\\\|,\.<>\/\?]+)(?=.*[a-zA-Z]+)(?=.*\d+)/,
+      );
+
+      const passwordTestPass = regex.test(newPassword);
+
+      if (!passwordTestPass) {
+        return {
+          ok: false,
+          error: '비밀번호는 문자, 숫자, 특수문자를 1개 이상 포함해야 합니다.',
+        };
+      }
+
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          password: newPassword,
+        },
+      });
+
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        ok: false,
+        error: '사용자 프로파일 수정할 수 없습니다.',
       };
     }
   }
