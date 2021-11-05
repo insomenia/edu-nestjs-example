@@ -8,15 +8,17 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  username String   @unique
-  password String
-  avatar   String?
-  role     UserRole @default(USER)
-  bio      String
-  verified Boolean  @default(false)
-  posts    Post[]
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  avatar    String?
+  role      UserRole @default(USER)
+  bio       String
+  verified  Boolean  @default(false)
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -27,12 +29,16 @@ model Post {
   content    String
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  posts Post[]
-  name  String
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum UserRole {

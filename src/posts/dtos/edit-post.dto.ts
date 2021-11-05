@@ -1,6 +1,8 @@
 export class EditPostInput {
   postId: number;
-  categoryName: string;
+  title?: string;
+  content?: string;
+  categoryName?: string;
 }
 
 export class EditPostOutput {

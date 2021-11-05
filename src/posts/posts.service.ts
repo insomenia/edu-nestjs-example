@@ -10,10 +10,14 @@ import {
 import {
   GetPostsBySearchTermInput,
   GetPostsBySearchTermOutput,
-} from './dtos/get-post-by-name.dto';
+} from './dtos/get-posts-by-name.dto';
 import { PrismaService } from '@app/prisma/prisma.service';
 import { createPaginationObj } from '@app/utils';
 import { User } from '.prisma/client';
+import {
+  GetPostsByCategoryIdInput,
+  GetPostsByCategoryIdOutput,
+} from './dtos/get-posts-by-categoryId.dto';
 
 @Injectable()
 export class PostsService {
@@ -22,84 +26,9 @@ export class PostsService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async getPostsBySearchTerm({
-    page,
-    query,
-    sort = 'createdAt desc',
-  }: GetPostsBySearchTermInput): Promise<GetPostsBySearchTermOutput> {
-    try {
-      const takePages = 10;
-      let orderBy = {};
-      switch (sort) {
-        case 'createdAt desc':
-          orderBy = {
-            createdAt: 'DESC',
-          };
-          break;
-        case 'price desc':
-          orderBy = {
-            price: 'DESC',
-          };
-          break;
-        case 'price asc':
-          orderBy = {
-            price: 'ASC',
-          };
-          break;
-        default:
-          throw new Error('상품이 존재하지 않습니다.');
-      }
-
-      const posts = await this.prisma.post.findMany({
-        where: {
-          // RAW : raw sql query를 실행할 수 있도록 해준다.
-          // %${query}%는 query가 포함된 값을 찾아준다.
-          title: {
-            mode: 'insensitive',
-          },
-        },
-        skip: (page - 1) * takePages,
-        take: takePages,
-        orderBy,
-        include: {
-          author: true,
-          category: true,
-        },
-      });
-
-      const totalPosts = posts.length;
-      console.log(totalPosts);
-
-      const paginationObj = createPaginationObj({
-        takePages,
-        page,
-        totalData: totalPosts,
-      });
-
-      return {
-        ok: true,
-        posts,
-        ...paginationObj,
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        ok: false,
-        error: '상품 품목들을 가져올 수 없습니다.',
-      };
-
-      // return {
-      //   ok: false,
-      //   errorObj: new Error(error),
-      // };
-    }
-  }
-
   async findPostById({
     postId,
   }: FindPostByIdInput): Promise<FindPostByIdOutput> {
-    // todo
-    // category 내역에 있는 품목만 가져오는 것으로 만들기
     try {
       const post = await this.prisma.post.findFirst({
         where: {
@@ -115,7 +44,61 @@ export class PostsService {
       console.error(error);
       return {
         ok: false,
-        error: '상품 품목들을 가져올 수 없습니다.',
+        error: '포스팅을 가져올 수 없습니다.',
+      };
+    }
+  }
+
+  async getPostsByCategoryId({
+    categoryId,
+    page = 1,
+  }: GetPostsByCategoryIdInput): Promise<GetPostsByCategoryIdOutput> {
+    try {
+      const takePages = 10;
+      const category = await this.prisma.category.findUnique({
+        where: {
+          id: categoryId,
+        },
+      });
+
+      if (!category) {
+        return {
+          ok: false,
+          error: '해당 카테고리가 존재하지 않습니다.',
+        };
+      }
+
+      const posts = await this.prisma.post.findMany({
+        where: {
+          category,
+        },
+        skip: (page - 1) * takePages,
+        take: takePages,
+        include: {
+          author: true,
+          category: true,
+        },
+      });
+
+      const totalPosts = posts.length;
+
+      const paginationObj = createPaginationObj({
+        takePages,
+        page,
+        totalData: totalPosts,
+      });
+
+      return {
+        ok: true,
+        posts,
+        categoryName: category.name,
+        ...paginationObj,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        ok: false,
+        error: '카테고리에 있는 포스팅을 불러올 수 없습니다.',
       };
     }
   }
@@ -133,12 +116,17 @@ export class PostsService {
 
       const newPost = await this.prisma.post.create({
         data: {
-          ...createPostInput,
+          title: createPostInput.title,
+          content: createPostInput.content,
           author: {
-            create: author,
+            connect: {
+              id: author.id,
+            },
           },
           category: {
-            create: category,
+            connect: {
+              id: category.id,
+            },
           },
         },
       });
@@ -151,7 +139,7 @@ export class PostsService {
       console.error(error);
       return {
         ok: false,
-        error: '상품을 추가할 수 없습니다.',
+        error: '포스팅을 추가할 수 없습니다.',
       };
     }
   }
@@ -164,7 +152,7 @@ export class PostsService {
       const post = await this.prisma.post.findFirst({
         where: {
           id: editPostInput.postId,
-          author,
+          authorId: author.id,
         },
         select: {
           category: true,
@@ -176,7 +164,7 @@ export class PostsService {
       if (!post) {
         return {
           ok: false,
-          error: '수정하시려는 상품이 없습니다.',
+          error: '수정하시려는 포스팅이 없습니다.',
         };
       }
 
@@ -193,9 +181,17 @@ export class PostsService {
           id: editPostInput.postId,
         },
         data: {
-          ...editPostInput,
+          title: editPostInput.title,
+          content: editPostInput.content,
+          author: {
+            connect: {
+              id: author.id,
+            },
+          },
           category: {
-            update: category,
+            connect: {
+              id: category.id,
+            },
           },
         },
       });
@@ -207,7 +203,7 @@ export class PostsService {
       console.error(error);
       return {
         ok: false,
-        error: '상품을 수정할 수 없습니다.',
+        error: '포스팅을 수정할 수 없습니다.',
       };
     }
   }
@@ -220,6 +216,7 @@ export class PostsService {
       const post = await this.prisma.post.findFirst({
         where: {
           id: postId,
+          authorId: author.id,
         },
         select: {
           author: true,
@@ -229,7 +226,7 @@ export class PostsService {
       if (!post) {
         return {
           ok: false,
-          error: '삭제하시려는 상품을 찾을 수가 없습니다.',
+          error: '삭제하시려는 포스팅을 찾을 수가 없습니다.',
         };
       }
 
@@ -246,7 +243,7 @@ export class PostsService {
       console.error(error);
       return {
         ok: false,
-        error: '상품을 삭제할 수가 없습니다.',
+        error: '포스팅을 삭제할 수가 없습니다.',
       };
     }
   }

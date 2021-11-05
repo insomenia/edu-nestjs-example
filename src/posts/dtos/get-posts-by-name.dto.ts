@@ -1,10 +1,9 @@
-import { SortState } from '@app/common';
 import { Post } from '@prisma/client';
 
 export class GetPostsBySearchTermInput {
   query: string;
-  sort?: SortState;
   page?: number;
+  categoryId?: number;
 }
 
 export class GetPostsBySearchTermOutput {
