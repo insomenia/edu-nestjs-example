@@ -14,4 +14,7 @@ export class EditProfileInput {
   bio: string;
 }
 
-export class EditProfileOutput {}
+export class EditProfileOutput {
+  ok: boolean;
+  error?: string;
+}

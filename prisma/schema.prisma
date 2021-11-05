@@ -16,6 +16,23 @@ model User {
   role     UserRole @default(USER)
   bio      String
   verified Boolean  @default(false)
+  posts    Post[]
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId   Int
+  title      String
+  content    String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  posts Post[]
+  name  String
 }
 
 enum UserRole {

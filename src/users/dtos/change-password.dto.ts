@@ -10,4 +10,7 @@ export class ChangePasswordInput {
   verifyPassword: string;
 }
 
-export class ChangePasswordOutput {}
+export class ChangePasswordOutput {
+  ok: boolean;
+  error?: string;
+}
