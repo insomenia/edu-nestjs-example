@@ -1,5 +1,7 @@
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class LoginInput {
   @IsEmail()
   email: string;
@@ -9,8 +11,6 @@ export class LoginInput {
   password: string;
 }
 
-export class LoginOutput {
-  ok: boolean;
-  error?: string;
+export class LoginOutput extends CoreOutput {
   token?: string;
 }

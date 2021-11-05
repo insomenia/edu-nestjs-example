@@ -7,6 +7,8 @@ import {
   MinLength,
 } from 'class-validator';
 
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class SignupInput {
   @IsEmail()
   email: string;
@@ -35,7 +37,4 @@ export class SignupInput {
   verified: boolean;
 }
 
-export class SignupOutput {
-  ok: boolean;
-  error?: string;
-}
+export class SignupOutput extends CoreOutput {}

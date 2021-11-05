@@ -1,7 +1,7 @@
 import { Category } from '@prisma/client';
 
-export class GetAllCategoriesOutput {
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
+export class GetAllCategoriesOutput extends CoreOutput {
   categories?: Category[];
-  ok: boolean;
-  error?: string;
 }

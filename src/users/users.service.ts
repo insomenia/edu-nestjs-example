@@ -1,17 +1,21 @@
-import { User } from '.prisma/client';
+import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
+
 import { AuthService } from '@app/auth/auth.service';
 import { JwtService } from '@app/jwt/jwt.service';
-import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@prisma/prisma.service';
 import { SignupInput, SignupOutput } from '@users/dtos/signup.dto';
 import {
   ChangePasswordInput,
   ChangePasswordOutput,
-} from './dtos/change-password.dto';
-import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
-import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { UserProfileOutput } from './dtos/user-profile.dto';
+} from '@users/dtos/change-password.dto';
+import {
+  EditProfileInput,
+  EditProfileOutput,
+} from '@users/dtos/edit-profile.dto';
+import { LoginInput, LoginOutput } from '@users/dtos/login.dto';
+import { UserProfileOutput } from '@users/dtos/user-profile.dto';
 
 @Injectable()
 export class UsersService {

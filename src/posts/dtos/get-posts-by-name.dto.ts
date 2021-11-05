@@ -1,19 +1,14 @@
 import { Post } from '@prisma/client';
 
-export class GetPostsBySearchTermInput {
-  query: string;
-  page?: number;
+import {
+  PaginationInput,
+  PaginationOutput,
+} from '@app/common/dtos/pagination.dto';
+
+export class GetPostsBySearchTermInput extends PaginationInput {
   categoryId?: number;
 }
 
-export class GetPostsBySearchTermOutput {
+export class GetPostsBySearchTermOutput extends PaginationOutput {
   posts?: Post[];
-  totalPages?: number;
-  totalResults?: number;
-  prevtPage?: number;
-  hasPrevtPage?: boolean;
-  nextPage?: number;
-  hasNextPage?: boolean;
-  ok: boolean;
-  error?: string;
 }

@@ -1,5 +1,7 @@
 import { IsEmail, IsString } from 'class-validator';
 
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class EditProfileInput {
   @IsEmail()
   email: string;
@@ -14,7 +16,4 @@ export class EditProfileInput {
   bio: string;
 }
 
-export class EditProfileOutput {
-  ok: boolean;
-  error?: string;
-}
+export class EditProfileOutput extends CoreOutput {}

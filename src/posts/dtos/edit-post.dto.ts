@@ -1,3 +1,5 @@
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class EditPostInput {
   postId: number;
   title?: string;
@@ -5,7 +7,4 @@ export class EditPostInput {
   categoryName?: string;
 }
 
-export class EditPostOutput {
-  ok: boolean;
-  error?: string;
-}
+export class EditPostOutput extends CoreOutput {}

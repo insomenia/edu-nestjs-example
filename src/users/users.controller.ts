@@ -5,13 +5,16 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { SignupInput, SignupOutput } from '@users/dtos/signup.dto';
 import { UsersService } from '@users/users.service';
-import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
+import { LoginInput, LoginOutput } from '@users/dtos/login.dto';
+import {
+  EditProfileInput,
+  EditProfileOutput,
+} from '@users/dtos/edit-profile.dto';
 import {
   ChangePasswordInput,
   ChangePasswordOutput,
-} from './dtos/change-password.dto';
-import { UserProfileOutput } from './dtos/user-profile.dto';
+} from '@users/dtos/change-password.dto';
+import { UserProfileOutput } from '@users/dtos/user-profile.dto';
 
 @Controller('users')
 export class UsersController {

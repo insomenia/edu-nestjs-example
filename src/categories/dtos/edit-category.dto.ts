@@ -1,5 +1,7 @@
 import { IsInt, IsString } from 'class-validator';
 
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class EditCategoryInput {
   @IsString()
   name: string;
@@ -8,7 +10,4 @@ export class EditCategoryInput {
   categoryId: number;
 }
 
-export class EditCategoryOutput {
-  ok: boolean;
-  error?: string;
-}
+export class EditCategoryOutput extends CoreOutput {}

@@ -1,5 +1,7 @@
 import { MinLength } from 'class-validator';
 
+import { CoreOutput } from '@app/common/dtos/output.dto';
+
 export class ChangePasswordInput {
   currentPassword: string;
 
@@ -10,7 +12,4 @@ export class ChangePasswordInput {
   verifyPassword: string;
 }
 
-export class ChangePasswordOutput {
-  ok: boolean;
-  error?: string;
-}
+export class ChangePasswordOutput extends CoreOutput {}
