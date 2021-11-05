@@ -9,17 +9,17 @@ import {
 } from '@nestjs/common';
 
 import { Roles } from '@auth/roles.decorator';
-import { CategoriesService } from '@categories/categories.service';
+import { CategoriesService } from '@app/apis/categories/categories.service';
 import {
   CreateCategoryInput,
   CreateCategoryOutput,
 } from './dtos/create-category.dto';
-import { DeleteCategoryOutput } from '@categories/dtos/delete-category.dto';
+import { DeleteCategoryOutput } from '@app/apis/categories/dtos/delete-category.dto';
 import {
   EditCategoryInput,
   EditCategoryOutput,
-} from '@categories/dtos/edit-category.dto';
-import { GetAllCategoriesOutput } from '@categories/dtos/get-all-categories.dto';
+} from '@app/apis/categories/dtos/edit-category.dto';
+import { GetAllCategoriesOutput } from '@app/apis/categories/dtos/get-all-categories.dto';
 
 @Controller('/categories')
 export class CategoriesController {

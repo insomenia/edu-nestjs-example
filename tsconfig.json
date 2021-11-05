@@ -24,9 +24,9 @@
       "@jwt/*": ["src/jwt/*"],
       "@common/*": ["src/common/*"],
       "@auth/*": ["src/auth/*"],
-      "@users/*": ["src/users/*"],
-      "@posts/*": ["src/posts/*"],
-      "@categories/*": ["src/categories/*"]
+      "@users/*": ["src/apis/users/*"],
+      "@posts/*": ["src/apis/posts/*"],
+      "@categories/*": ["src/apis/categories/*"]
     }
   }
 }
