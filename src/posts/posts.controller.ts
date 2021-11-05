@@ -10,18 +10,17 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import { CreatePostInput, CreatePostOutput } from './dtos/create-post.dto';
-import { DeletePostOutput } from './dtos/delete-post.dto';
-import { EditPostInput, EditPostOutput } from './dtos/edit-post.dto';
-import { FindPostByIdOutput } from './dtos/find-post-by-id.dto';
-import { PostsService } from './posts.service';
-
-import { Roles } from '@app/auth/roles.decorator';
-import { AuthUser } from '@app/auth/auth-user.decorator';
+import { CreatePostInput, CreatePostOutput } from '@posts/dtos/create-post.dto';
+import { DeletePostOutput } from '@posts/dtos/delete-post.dto';
+import { EditPostInput, EditPostOutput } from '@posts/dtos/edit-post.dto';
+import { FindPostByIdOutput } from '@posts/dtos/find-post-by-id.dto';
 import {
   GetPostsByCategoryIdInput,
   GetPostsByCategoryIdOutput,
-} from './dtos/get-posts-by-categoryId.dto';
+} from '@posts/dtos/get-posts-by-categoryId.dto';
+import { PostsService } from '@posts/posts.service';
+import { Roles } from '@app/auth/roles.decorator';
+import { AuthUser } from '@app/auth/auth-user.decorator';
 
 @Controller('/posts')
 export class PostsController {

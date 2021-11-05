@@ -3,7 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { UsersModule } from '@users/users.module';
 import { AuthGuard } from '@auth/auth.guard';
-import { AuthService } from './auth.service';
+import { AuthService } from '@auth/auth.service';
 
 @Module({
   imports: [UsersModule],

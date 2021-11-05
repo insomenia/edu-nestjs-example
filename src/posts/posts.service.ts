@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 
-import { CreatePostInput, CreatePostOutput } from './dtos/create-post.dto';
-import { EditPostInput, EditPostOutput } from './dtos/edit-post.dto';
-import { DeletePostInput, DeletePostOutput } from './dtos/delete-post.dto';
+import { CreatePostInput, CreatePostOutput } from '@posts/dtos/create-post.dto';
+import { EditPostInput, EditPostOutput } from '@posts/dtos/edit-post.dto';
+import { DeletePostInput, DeletePostOutput } from '@posts/dtos/delete-post.dto';
 import {
   FindPostByIdInput,
   FindPostByIdOutput,
-} from './dtos/find-post-by-id.dto';
-import {
-  GetPostsBySearchTermInput,
-  GetPostsBySearchTermOutput,
-} from './dtos/get-posts-by-name.dto';
-import { PrismaService } from '@app/prisma/prisma.service';
-import { createPaginationObj } from '@app/utils';
-import { User } from '.prisma/client';
+} from '@posts/dtos/find-post-by-id.dto';
 import {
   GetPostsByCategoryIdInput,
   GetPostsByCategoryIdOutput,
-} from './dtos/get-posts-by-categoryId.dto';
+} from '@posts/dtos/get-posts-by-categoryId.dto';
+import { PrismaService } from '@app/prisma/prisma.service';
+import { createPaginationObj } from '@app/utils';
 
 @Injectable()
 export class PostsService {

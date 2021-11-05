@@ -3,7 +3,6 @@ import { User } from '@prisma/client';
 
 import { AuthService } from '@app/auth/auth.service';
 import { JwtService } from '@app/jwt/jwt.service';
-
 import { PrismaService } from '@prisma/prisma.service';
 import { SignupInput, SignupOutput } from '@users/dtos/signup.dto';
 import {

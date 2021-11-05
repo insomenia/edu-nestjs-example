@@ -4,16 +4,16 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCategoryInput,
   CreateCategoryOutput,
-} from './dtos/create-category.dto';
+} from '@categories/dtos/create-category.dto';
 import {
   DeleteCategoryInput,
   DeleteCategoryOutput,
-} from './dtos/delete-category.dto';
+} from '@categories/dtos/delete-category.dto';
 import {
   EditCategoryInput,
   EditCategoryOutput,
-} from './dtos/edit-category.dto';
-import { GetAllCategoriesOutput } from './dtos/get-all-categories.dto';
+} from '@categories/dtos/edit-category.dto';
+import { GetAllCategoriesOutput } from '@categories/dtos/get-all-categories.dto';
 
 @Injectable()
 export class CategoriesService {

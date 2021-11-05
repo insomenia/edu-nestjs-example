@@ -4,9 +4,9 @@ import { ConfigModule } from '@config/config.module';
 import { PrismaModule } from '@prisma/prisma.module';
 import { UsersModule } from '@users/users.module';
 import { JwtModule } from '@jwt/jwt.module';
-import { AuthModule } from './auth/auth.module';
-import { PostsModule } from './posts/posts.module';
-import { CategoriesModule } from './categories/categories.module';
+import { AuthModule } from '@auth/auth.module';
+import { PostsModule } from '@posts/posts.module';
+import { CategoriesModule } from '@categories/categories.module';
 
 @Module({
   imports: [
