@@ -2,6 +2,8 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as helmet from 'helmet';
+import * as compression from 'compression';
 
 import { AppModule } from '@app/app.module';
 import { PrismaService } from '@prisma/prisma.service';
@@ -13,6 +15,9 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.use(helmet());
+  app.use(compression());
 
   await app.listen(config.get('app.port'), () => {
     logger.log(
