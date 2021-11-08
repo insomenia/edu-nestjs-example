@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 
 import { ConfigModule } from '@config/config.module';
 import { PrismaModule } from '@prisma/prisma.module';
@@ -7,6 +12,7 @@ import { JwtModule } from '@jwt/jwt.module';
 import { AuthModule } from '@auth/auth.module';
 import { PostsModule } from '@posts/posts.module';
 import { CategoriesModule } from '@app/apis/categories/categories.module';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 
 @Module({
   imports: [
@@ -23,4 +29,10 @@ import { CategoriesModule } from '@app/apis/categories/categories.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '/posts', method: RequestMethod.ALL });
+  }
+}
