@@ -26,7 +26,8 @@
       "@auth/*": ["src/auth/*"],
       "@users/*": ["src/apis/users/*"],
       "@posts/*": ["src/apis/posts/*"],
-      "@categories/*": ["src/apis/categories/*"]
+      "@categories/*": ["src/apis/categories/*"],
+      "@filters/*": ["src/filters/*"]
     }
   }
 }

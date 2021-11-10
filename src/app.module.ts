@@ -13,6 +13,7 @@ import { AuthModule } from '@auth/auth.module';
 import { PostsModule } from '@posts/posts.module';
 import { CategoriesModule } from '@app/apis/categories/categories.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { FiltersModule } from './filters/filters.module';
 
 @Module({
   imports: [
@@ -22,6 +23,9 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
       privateKey: process.env.PRIVATE_KEY,
     }),
     AuthModule,
+    FiltersModule,
+
+    // apis
     UsersModule,
     PostsModule,
     CategoriesModule,

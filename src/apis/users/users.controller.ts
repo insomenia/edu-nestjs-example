@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseFilters } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { AuthUser } from '@app/auth/auth-user.decorator';
 import { Roles } from '@app/auth/roles.decorator';
@@ -68,7 +68,7 @@ export class UsersController {
     return this.usersService.changePassword(changePasswordOutput, user);
   }
 
-  @Post('/user-profile')
+  @Get('/user-profile')
   @Roles(['Any'])
   async userProfile(@AuthUser() user: User): Promise<UserProfileOutput> {
     return this.usersService.findUserById(user.id);
